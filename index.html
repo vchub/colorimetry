@@ -8,13 +8,17 @@
 </head>
 
 <body onload="formHandler()">
-  <h2>L.a.b</h2>
+  <h2>L*a*b</h2>
 
   <form id="f1">
     L: <input value="0" max="100" type="number" name="L" min="0">
     a: <input value="0" max="128" type="number" name="a" min="-127">
     b: <input value="0" max="128" type="number" name="b" min="-127">
-    <input value="65" max="65" type="hidden" name="dwhite" min="50">
+    White-Reference
+    <select name="dwhite">
+      <option selected value="65">D65</option>
+      <option value="50">D50</option>
+    </select>
     <button type="submit">GO</button>
   </form>
 

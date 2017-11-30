@@ -1,3 +1,5 @@
+'use strict'
+
 // ==============================
 // Utilities
 const cl = console.log
@@ -48,7 +50,7 @@ const gamma_sRGB = (c) => {
 const XYZ_to_sRGB = (xyz) => {
   let xyz_n = xyz.map(x => x / 100)
 
-  A = [
+  let A = [
     3.2406255, -1.5372080, -0.4986286,
     -0.9689307, 1.8757561, 0.0415175,
     0.0557101, -0.2040211, 1.0569959,
@@ -80,7 +82,9 @@ const Lab_to_SRGB = (l, a, b, d_white) => {
 // ==============================
 // (l, a, b, d_white = 65) => [[int, int, int](rgb), float (Gost)]
 const Lab_to_Gost = (l, a, b, d_white = 65) => {
-  let rgb = Lab_to_SRGB(l, a, b, d_white)
+  let lab = [l,a,b,d_white].map(x=> x*1.0)
+  let rgb = Lab_to_SRGB.apply(null, lab)
+  cl('rgb', rgb)
   let g = rgb[1] / asum(rgb)
   let c = round_to_half(10.7460 - 25.39 * g)
   return [rgb, c]
@@ -130,7 +134,7 @@ const formHandler = () => {
     const b = form.elements.b.value
     const d_white = form.elements.dwhite.value || 65
 
-    cl(l,a,b,d_white)
+    cl(l, a, b, d_white)
 
     const got = Lab_to_Gost(l, a, b, d_white)
     const rgb = got[0]
@@ -147,13 +151,13 @@ const formHandler = () => {
 
 }
 
-module = module || {}
-module.exports.matmul = matmul
-module.exports.Lab_to_XYZ = Lab_to_XYZ
-module.exports.XYZ_to_sRGB = XYZ_to_sRGB
-module.exports.Lab_to_SRGB = Lab_to_SRGB
-module.exports.Lab_to_Gost = Lab_to_Gost
-module.exports.asum = asum
-module.exports.cl = cl
-module.exports.round_to_half = round_to_half
-  // module.exports.labRgb = labRgb
+if (typeof module !== 'undefined') {
+  module.exports.matmul = matmul
+  module.exports.Lab_to_XYZ = Lab_to_XYZ
+  module.exports.XYZ_to_sRGB = XYZ_to_sRGB
+  module.exports.Lab_to_SRGB = Lab_to_SRGB
+  module.exports.Lab_to_Gost = Lab_to_Gost
+  module.exports.asum = asum
+  module.exports.cl = cl
+  module.exports.round_to_half = round_to_half
+}

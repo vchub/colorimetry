@@ -54,6 +54,10 @@ test('Lab to Gost', () => {
   got = Lab_to_Gost(25.01, 35.35, 28.23)
   expect(got[0]).toEqual([112, 30, 18])
   expect(got[1]).toEqual(6)
+
+  got = Lab_to_Gost('25.01', '35.35', '28.23')
+  expect(got[0]).toEqual([112, 30, 18])
+  expect(got[1]).toEqual(6)
 })
 
 
