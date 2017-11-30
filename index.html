@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Colorimetry</title>
+</head>
+
+<body onload="formHandler()">
+  <h2>L.a.b</h2>
+
+  <form id="f1">
+    L: <input value="0" max="100" type="number" name="L" min="0">
+    a: <input value="0" max="128" type="number" name="a" min="-127">
+    b: <input value="0" max="128" type="number" name="b" min="-127">
+    <input value="65" max="65" type="hidden" name="dwhite" min="50">
+    <button type="submit">GO</button>
+  </form>
+
+
+  <p>ЦНT: <span id="gost"> ? </span></p>
+
+  <div id="circle"></div>
+
+  <script src="matrix.js" charset="utf-8"></script>
+
+  <style type="text/css" media="screen">
+    #circle {
+      width: 100px;
+      height: 100px;
+      -webkit-border-radius: 50px;
+      -moz-border-radius: 50px;
+      border-radius: 50px;
+      background: gray;
+    }
+  </style>
+
+
+</body>
+
+</html>
