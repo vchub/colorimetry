@@ -55,7 +55,7 @@ const XYZ_to_sRGB = (xyz) => {
   ]
 
   let rgb_lin = matmul(A, xyz_n, 3, 3, 1)
-  let rgb = rgb_lin.map(x => 255 * gamma_sRGB(x))
+  let rgb = rgb_lin.map(x => Math.round(255 * gamma_sRGB(x)))
     .map(x => x > 0 ? x : 0)
     .map(x => x < 256 ? x : 255)
   return rgb
@@ -130,11 +130,14 @@ const formHandler = () => {
     const b = form.elements.b.value
     const d_white = form.elements.dwhite.value || 65
 
-    const rgb = Lab_to_SRGB(l, a, b, d_white)
-    const gost = Lab_to_Gost(l, a, b, d_white)
+    cl(l,a,b,d_white)
+
+    const got = Lab_to_Gost(l, a, b, d_white)
+    const rgb = got[0]
+    const gost = got[1]
+    cl(got)
     cl(rgb)
     cl(gost)
-
     const thergb = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
     circle.style.background = thergb
     res.innerHTML = gost

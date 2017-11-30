@@ -25,30 +25,34 @@ test('Lab_to_XYZ', () => {
 
 test('XYZ_to_sRGB', () => {
   // converter: https://nixsensor.com/free-color-converter/
-  expect(around(XYZ_to_sRGB([4.54, 11.25, 34.65])))
-    .toEqual(around([0, 118, 159]))
+  expect(XYZ_to_sRGB([4.54, 11.25, 34.65]))
+    .toEqual([0, 118, 159])
 
   expect(around(XYZ_to_sRGB([70, 70, 20])))
-    .toEqual(around([255, 210, 92]))
+    .toEqual([255, 210, 92])
 })
 
 test('Lab_to_SRGB', () => {
   // converter: https://nixsensor.com/free-color-converter/
-  expect(around(Lab_to_SRGB.apply(null, [90, 0, 60, 65])))
-    .toEqual(around([255, 223, 108]))
-  expect(around(Lab_to_SRGB.apply(null, [70, -20, 60])))
-    .toEqual(around([168, 179, 52]))
+  expect(Lab_to_SRGB.apply(null, [90, 0, 60, 65]))
+    .toEqual([255, 223, 108])
+  expect(Lab_to_SRGB.apply(null, [70, -20, 60]))
+    .toEqual([168, 179, 52])
 })
 
 test('Lab to Gost', () => {
-  let lab = [52.47, 18.98, 52.89]
+  let lab = [52.47, 18.98, 52.89, 65]
   let got = Lab_to_Gost.apply(null, lab)
-  expect(around(got[0])).toEqual([175, 111, 27])
+  expect(got[0]).toEqual([175, 111, 27])
   expect(got[1]).toEqual(1.5)
 
-  lab = [25.01,35.35,28.23]
+  lab = [25.01, 35.35, 28.23]
   got = Lab_to_Gost.apply(null, lab)
-  expect(around(got[0])).toEqual([112,30,18])
+  expect(got[0]).toEqual([112, 30, 18])
+  expect(got[1]).toEqual(6)
+
+  got = Lab_to_Gost(25.01, 35.35, 28.23)
+  expect(got[0]).toEqual([112, 30, 18])
   expect(got[1]).toEqual(6)
 })
 
