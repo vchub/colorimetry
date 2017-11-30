@@ -45,33 +45,45 @@ const gamma_sRGB = (c) => {
     return 1.055 * Math.pow(c, 1 / 2.4) - 0.055
 }
 
-const XYZn_to_sRGB = (Xn, Yn, Zn) => {
-  Rlin = Xn * 3.2406255 + Yn * -1.5372080 + Zn * -0.4986286
-  Glin = Xn * -0.9689307 + Yn * 1.8757561 + Zn * 0.0415175
-  Blin = Xn * 0.0557101 + Yn * -0.2040211 + Zn * 1.0569959
-  R = Math.round(255 * gamma_sRGB(Rlin))
-  G = Math.round(255 * gamma_sRGB(Glin))
-  B = Math.round(255 * gamma_sRGB(Blin))
-  return [R, G, B]
+const XYZ_to_sRGB = (xyz) => {
+  let xyz_n = xyz.map(x => x / 100)
+
+  A = [
+    3.2406255, -1.5372080, -0.4986286,
+    -0.9689307, 1.8757561, 0.0415175,
+    0.0557101, -0.2040211, 1.0569959,
+  ]
+
+  let rgb_lin = matmul(A, xyz_n, 3, 3, 1)
+  let rgb = rgb_lin.map(x => 255 * gamma_sRGB(x))
+    .map(x => x > 0 ? x : 0)
+    .map(x => x < 256 ? x : 255)
+  return rgb
 }
+
+// const XYZn_to_sRGB = (Xn, Yn, Zn) => {
+//   Rlin = Xn * 3.2406255 + Yn * -1.5372080 + Zn * -0.4986286
+//   Glin = Xn * -0.9689307 + Yn * 1.8757561 + Zn * 0.0415175
+//   Blin = Xn * 0.0557101 + Yn * -0.2040211 + Zn * 1.0569959
+//   R = Math.round(255 * gamma_sRGB(Rlin))
+//   G = Math.round(255 * gamma_sRGB(Glin))
+//   B = Math.round(255 * gamma_sRGB(Blin))
+//   return [R, G, B]
+// }
 
 // ==============================
 const Lab_to_SRGB = (l, a, b, d_white) => {
   let xyz = Lab_to_XYZ(l, a, b, d_white)
-
-  // cl('xyz: ', xyz)
-
-  return XYZn_to_sRGB.apply(null, xyz)
+  return XYZ_to_sRGB(xyz)
 }
 
 // ==============================
+// (l, a, b, d_white = 65) => [[int, int, int](rgb), float (Gost)]
 const Lab_to_Gost = (l, a, b, d_white = 65) => {
   let rgb = Lab_to_SRGB(l, a, b, d_white)
-    // cl(rgb)
   let g = rgb[1] / asum(rgb)
-    // cl(g)
   let c = round_to_half(10.7460 - 25.39 * g)
-  return c
+  return [rgb, c]
 }
 
 // ==============================
@@ -118,10 +130,6 @@ const formHandler = () => {
     const b = form.elements.b.value
     const d_white = form.elements.dwhite.value || 65
 
-    // cl('l: ', l)
-    // cl('a: ', a)
-    // cl('b: ', b)
-
     const rgb = Lab_to_SRGB(l, a, b, d_white)
     const gost = Lab_to_Gost(l, a, b, d_white)
     cl(rgb)
@@ -139,7 +147,7 @@ const formHandler = () => {
 module = module || {}
 module.exports.matmul = matmul
 module.exports.Lab_to_XYZ = Lab_to_XYZ
-module.exports.XYZn_to_sRGB = XYZn_to_sRGB
+module.exports.XYZ_to_sRGB = XYZ_to_sRGB
 module.exports.Lab_to_SRGB = Lab_to_SRGB
 module.exports.Lab_to_Gost = Lab_to_Gost
 module.exports.asum = asum
