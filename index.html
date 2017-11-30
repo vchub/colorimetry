@@ -11,21 +11,26 @@
   <h2>L*a*b</h2>
 
   <form id="f1">
-    L: <input value="0" max="100" type="number" name="L" min="0">
-    a: <input value="0" max="128" type="number" name="a" min="-127">
-    b: <input value="0" max="128" type="number" name="b" min="-127">
-    White-Reference
+    <b>L:</b><input value="0" max="100" type="number" name="L" min="0">
+    <b>a</b>: <input value="0" max="128" type="number" name="a" min="-127">
+    <b>b:</b><input value="0" max="128" type="number" name="b" min="-127">
+    <button type="submit">GO</button>
+    <br></br>
+    White:
     <select name="dwhite">
       <option selected value="65">D65</option>
       <option value="50">D50</option>
     </select>
-    <button type="submit">GO</button>
   </form>
 
 
   <p>ЦНT: <span id="gost"> ? </span></p>
 
   <div id="circle"></div>
+
+    <p>
+    Расчет цвета нефтяных и масляных фракций по шкале ЦНТ
+    </p>
 
   <script src="matrix.js" charset="utf-8"></script>
 
